@@ -6,25 +6,13 @@ volumes:
 
 services:
   postgres:
-    build: ./postgres
-    volumes:
-      - postgres_data_dev:/var/lib/postgresql/data
-      - postgres_backup_dev:/backups
-    environment:
-      - POSTGRES_USER=saasproj
-
+    image: postgres
   web:
     build:
       context: .
       dockerfile: ./web/Dockerfile
-    depends_on:
-      - postgres
-    environment:
-      - POSTGRES_USER=saasproj
-      - USE_DOCKER=yes
-    volumes:
-      - ./web:/app
+    #command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-    links:
+    depends_on:
       - postgres
